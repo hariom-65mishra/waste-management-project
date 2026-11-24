@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket {{ complaint.tracking_number }} - CleanCity{% endblock %}
+
+{% block content %}
+<div class="ticket-detail-wrapper">
+    <div class="ticket-header-card">
+        <div class="ticket-title-group">
+            <span class="sub-badge">Complaint Ticket</span>
+            <h1>{{ complaint.tracking_number }} — {{ complaint.get_category_display }}</h1>
+            <p>Logged by {{ complaint.user.first_name|default:complaint.user.username }} on {{ complaint.created_at|date:"F d, Y at h:i A" }}</p>
+        </div>
+        <div class="ticket-status-box">
+            <span class="status-pill-lg status-{{ complaint.status|slugify }}">{{ complaint.status }}</span>
+        </div>
+    </div>
+
+    <div class="ticket-content-grid">
+        <div class="card ticket-info-card">
+            <h2>Incident Information</h2>
+            
+            <div class="info-row">
+                <span class="info-label">Waste Category:</span>
+                <span class="info-val"><strong>{{ complaint.get_category_display }}</strong></span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">Location / Address:</span>
+                <span class="info-val">{{ complaint.location }}</span>
+            </div>
+
+            {% if complaint.landmark %}
+            <div class="info-row">
+                <span class="info-label">Nearby Landmark:</span>
+                <span class="info-val">{{ complaint.landmark }}</span>
+            </div>
+            {% endif %}
+
+            <div class="info-row">
+                <span class="info-label">Urgency Level:</span>
+                <span class="info-val">
+                    <span class="urgency-pill urgency-{{ complaint.urgency|lower }}">{{ complaint.urgency }} Priority</span>
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Last Status Update:</span>
+                <span class="info-val">{{ complaint.updated_at|date:"M d, Y - h:i A" }}</span>
+            </div>
+
+            <div class="description-section">
+                <h3>Problem Description:</h3>
+                <div class="desc-box">
+                    {{ complaint.description|linebreaks }}
+                </div>
+            </div>
+
+            {% if complaint.admin_notes %}
+            <div class="admin-notes-section">
+                <h3>Sanitation Team Notes:</h3>
+                <div class="notes-box">
+                    {{ complaint.admin_notes|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="ticket-actions">
+                <a href="{% url 'my_complaints' %}" class="btn-outline">← Back to My Complaints</a>
+                <a href="{% url 'report_waste' %}" class="btn-main">➕ Report Another Issue</a>
+            </div>
+        </div>
+
+        <div class="card ticket-photo-card">
+            <h2>Site Photo Verification</h2>
+            {% if complaint.photo %}
+                <div class="photo-frame">
+                    <img src="{{ complaint.photo.url }}" alt="Waste site photo" class="uploaded-site-img">
+                </div>
+            {% else %}
+                <div class="no-photo-box">
+                    <span class="no-photo-icon">📷</span>
+                    <p>No site photograph was uploaded for this report.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

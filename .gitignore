@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+*.sqlite3
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Media uploads (optional, ignore user uploads)
+media/waste_photos/*
+!media/waste_photos/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.swp

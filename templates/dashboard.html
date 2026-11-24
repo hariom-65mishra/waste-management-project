@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen Dashboard - CleanCity{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="user-greeting">
+        <span class="sub-badge">Control Center</span>
+        <h1>Hello, {{ user.first_name|default:user.username }} 👋</h1>
+        <p>Monitor your active waste tickets and neighborhood cleanup progress.</p>
+    </div>
+    <div class="header-action">
+        <a href="{% url 'report_waste' %}" class="btn-main">➕ New Waste Complaint</a>
+    </div>
+</div>
+
+<div class="stats-overview">
+    <div class="stat-box">
+        <div class="stat-number">{{ total }}</div>
+        <div class="stat-label">My Total Reports</div>
+    </div>
+    <div class="stat-box stat-pending">
+        <div class="stat-number">{{ pending }}</div>
+        <div class="stat-label">Pending Review</div>
+    </div>
+    <div class="stat-box stat-progress">
+        <div class="stat-number">{{ in_progress }}</div>
+        <div class="stat-label">Under Cleanup</div>
+    </div>
+    <div class="stat-box stat-collected">
+        <div class="stat-number">{{ collected }}</div>
+        <div class="stat-label">Resolved / Cleaned</div>
+    </div>
+</div>
+
+<div class="card table-card">
+    <div class="card-title-bar">
+        <h2>Recent Reports</h2>
+        <a href="{% url 'my_complaints' %}" class="link-bold">View All Reports →</a>
+    </div>
+
+    {% if recent_reports %}
+        <div class="responsive-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Urgency</th>
+                        <th>Date Filed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in recent_reports %}
+                        <tr>
+                            <td><span class="id-tag">{{ report.tracking_number }}</span></td>
+                            <td><strong>{{ report.get_category_display }}</strong></td>
+                            <td>{{ report.location }}</td>
+                            <td>
+                                <span class="urgency-pill urgency-{{ report.urgency|lower }}">{{ report.urgency }}</span>
+                            </td>
+                            <td>{{ report.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <span class="status-pill status-{{ report.status|slugify }}">{{ report.status }}</span>
+                            </td>
+                            <td>
+                                <a href="{% url 'complaint_detail' report.pk %}" class="btn-sm-view">View Details</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🌱</div>
+            <h3>No Complaints Filed Yet</h3>
+            <p>You haven't logged any waste issues. Click below to file your first complaint.</p>
+            <a href="{% url 'report_waste' %}" class="btn-main mt-3">➕ Report Waste Now</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

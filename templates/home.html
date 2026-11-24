@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}CleanCity - Smart Waste Reporting & Management{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-text">
+        <div class="hero-pill">🌿 Modern Eco-Clean Initiative</div>
+        <h1 class="hero-title">Report Waste Today.<br><span class="gradient-text">Keep Cities Clean Tomorrow.</span></h1>
+        <p class="hero-subtitle">
+            CleanCity connects citizens with municipal cleanup squads in real-time. Snap a photo, drop the location, and track waste resolution from pending to collected.
+        </p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'report_waste' %}" class="btn-main">➕ Report Waste Now</a>
+                <a href="{% url 'dashboard' %}" class="btn-outline">📊 View My Dashboard</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn-main">🚀 Get Started Free</a>
+                <a href="{% url 'login' %}" class="btn-outline">🔑 Citizen Login</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="hero-card-banner">
+        <div class="hero-banner-inner">
+            <div class="eco-circle-icon">🌱</div>
+            <h3>Smart Urban Sanitation</h3>
+            <p>Empowering residents to transform neighborhoods into litter-free, green communities.</p>
+            <div class="banner-highlight">
+                <span>📍 Geotagged Reports</span>
+                <span>📸 Photo Verification</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-overview">
+    <div class="stat-box">
+        <div class="stat-number">{{ total_count }}</div>
+        <div class="stat-label">Total Reports Logged</div>
+    </div>
+    <div class="stat-box stat-collected">
+        <div class="stat-number">{{ collected_count }}</div>
+        <div class="stat-label">Successfully Collected</div>
+    </div>
+    <div class="stat-box stat-progress">
+        <div class="stat-number">{{ in_progress_count }}</div>
+        <div class="stat-label">In-Progress / Dispatched</div>
+    </div>
+    <div class="stat-box stat-pending">
+        <div class="stat-number">{{ pending_count }}</div>
+        <div class="stat-label">Pending Action</div>
+    </div>
+</section>
+
+<section class="workflow-section">
+    <div class="section-title-wrap">
+        <span class="sub-badge">Simple 3-Step Process</span>
+        <h2>How CleanCity Works</h2>
+    </div>
+
+    <div class="workflow-grid">
+        <div class="workflow-card">
+            <div class="step-num">01</div>
+            <div class="card-icon">📸</div>
+            <h3>1. Spot & Report</h3>
+            <p>Notice an uncollected dumpster or illegal dumping? Submit a quick complaint with photo and street details.</p>
+        </div>
+        <div class="workflow-card">
+            <div class="step-num">02</div>
+            <div class="card-icon">🚛</div>
+            <h3>2. Team Dispatched</h3>
+            <p>Our municipal sanitation squad reviews your report, assigns priority, and mobilizes collection trucks.</p>
+        </div>
+        <div class="workflow-card">
+            <div class="step-num">03</div>
+            <div class="card-icon">✅</div>
+            <h3>3. Clean & Verify</h3>
+            <p>The waste is removed, community cleanliness is restored, and your ticket status updates to Collected!</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

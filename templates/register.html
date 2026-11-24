@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Register New Account - CleanCity{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <span class="auth-badge">Join CleanCity</span>
+            <h1>Citizen Registration</h1>
+            <p>Join hands in keeping our city clean and eco-friendly.</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="field-help">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-main full-width">Complete Registration</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{% url 'login' %}" class="link-bold">Login Here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

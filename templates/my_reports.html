@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}My Waste Complaints History - CleanCity{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <span class="sub-badge">History Log</span>
+        <h1>My Waste Complaints</h1>
+        <p>Complete record of all reports submitted by your account.</p>
+    </div>
+    <div class="header-action">
+        <a href="{% url 'report_waste' %}" class="btn-main">➕ Report Waste</a>
+    </div>
+</div>
+
+<div class="card table-card">
+    {% if complaints %}
+        <div class="responsive-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Landmark</th>
+                        <th>Priority</th>
+                        <th>Submitted On</th>
+                        <th>Current Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in complaints %}
+                        <tr>
+                            <td><span class="id-tag">{{ report.tracking_number }}</span></td>
+                            <td><strong>{{ report.get_category_display }}</strong></td>
+                            <td>{{ report.location }}</td>
+                            <td>{{ report.landmark|default:"-" }}</td>
+                            <td>
+                                <span class="urgency-pill urgency-{{ report.urgency|lower }}">{{ report.urgency }}</span>
+                            </td>
+                            <td>{{ report.created_at|date:"d M Y, h:i A" }}</td>
+                            <td>
+                                <span class="status-pill status-{{ report.status|slugify }}">{{ report.status }}</span>
+                            </td>
+                            <td>
+                                <a href="{% url 'complaint_detail' report.pk %}" class="btn-sm-view">View Ticket</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>No Records Found</h3>
+            <p>You haven't filed any complaints yet.</p>
+            <a href="{% url 'report_waste' %}" class="btn-main mt-3">File a Complaint</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

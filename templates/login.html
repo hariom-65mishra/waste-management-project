@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen & Staff Login - CleanCity{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <span class="auth-badge">Secure Access</span>
+            <h1>Welcome Back</h1>
+            <p>Log in to manage and track your submitted waste complaints.</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-error-banner">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username">Username or Email</label>
+                <input type="text" name="username" autofocus required id="id_username" class="form-input" placeholder="Enter username (e.g. hariomtnr@gmail.com)">
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" required id="id_password" class="form-input" placeholder="Enter password (e.g. hari@123)">
+            </div>
+
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+
+            <button type="submit" class="btn-main full-width">Sign In to Account</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account yet? <a href="{% url 'register' %}" class="link-bold">Create Free Account</a></p>
+            <div class="demo-tip">
+                <strong>Admin Login Demo:</strong> Username: <code>hariomtnr@gmail.com</code> | Password: <code>hari@123</code>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
